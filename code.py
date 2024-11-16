@@ -1,3 +1,4 @@
+# v1.9-beta
 import socketpool
 import wifi
 from duck import exe
