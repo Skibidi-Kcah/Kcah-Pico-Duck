@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pico Rubber Ducky</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #FFFFFF;
+            background-color: #000000;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            margin: 20px 0;
+            color: yellow;
+            transition: color 1s ease-in-out;
+        }
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        textarea {
+            height: 40vh;
+            width: 20vw;
+            margin-bottom: 10px;
+        }
+        button {
+            width: 20vw;
+            padding: 10px;
+            background-color: #2f3136;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 1s ease;
+        }
+        button:hover {
+            background-color: #44474d;
+        }
+        footer {
+            background-color: #2f3136;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Kcah Pico Duck</h1>
+    <div class="content">
+        <textarea id="payload" name="content" placeholder="Ducky code here"></textarea>
+        <button id="runButton" onclick="main()">RUN</button>
+    </div>
+    <footer>
+        &copy; <span id="currentYear"></span> Skibidi-Kcah | <a href="https://github.com/Skibidi-Kcah" style="color: white; text-decoration: none;">Github</a>
+    </footer>
+    <script>
+        function sendHttpRequest(data) {
+            console.log(data);
+
+            var url = "http://192.168.4.1/api";
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+        
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("Request sent successfully!");
+                    } else {
+                        console.error("Request failed. Status:", xhr.status);
+                    }
+                }
+            };
+        
+            xhr.send(JSON.stringify(data));
+        }
+
+        function main() {
+            var payload = document.getElementById("payload").value;
+            var data = { username: "Payload", content: payload };
+            sendHttpRequest(data);
+
+            // Title color change
+            const title = document.getElementById("title");
+            title.style.color = "yellow";
+            setTimeout(() => {
+                title.style.color = "";
+            }, 1000);
+
+            // Button color change
+            const button = document.getElementById("runButton");
+            button.style.backgroundColor = "yellow";
+            button.style.color = "black";
+            setTimeout(() => {
+                button.style.backgroundColor = "";
+                button.style.color = "white";
+            }, 1000);
+        }
+
+        document.getElementById("currentYear").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
